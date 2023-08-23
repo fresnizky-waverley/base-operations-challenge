@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PlaceService } from './place.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
@@ -13,22 +13,17 @@ export class PlaceController {
   }
 
   @Get()
-  findAll() {
-    return this.placeService.findAll();
+  findByRadius(
+    @Query('longitude') longitude: number, 
+    @Query('latitude') latitude: number, 
+    @Query('radius') radius: number
+  ) {
+    return this.placeService.findByRadius(longitude, latitude, radius);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.placeService.findOne(+id);
-  }
-
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
     return this.placeService.update(+id, updatePlaceDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.placeService.remove(+id);
-  }
 }
