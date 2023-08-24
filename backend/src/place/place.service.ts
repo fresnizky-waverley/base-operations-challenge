@@ -13,30 +13,19 @@ export class PlaceService {
   ) {}
   create(createPlaceDto: CreatePlaceDto) {
     return this.placeRepository.query(
-      `INSERT INTO places (name, address, location) 
-        VALUES (
-          '${createPlaceDto.name}', 
-          '${createPlaceDto.address}', 
-          ST_GeomFromText('POINT(${createPlaceDto.longitude} ${createPlaceDto.latitude})', 4326)
-        )`,
+      `INSERT INTO places (name, address, location) VALUES ('${createPlaceDto.name}', '${createPlaceDto.address}', ST_GeomFromText('POINT(${createPlaceDto.longitude} ${createPlaceDto.latitude})', 4326))`,
     );
   }
 
   findByRadius(longitude: number, latitude: number, radius: number) {
     return this.placeRepository.query(
-      `SELECT id, name, address, ST_X(location) as longitude, ST_Y(location) as latitude, ST_DistanceSphere(location, ST_GeomFromText('POINT(${longitude} ${latitude})', 4326)) as distance 
-        FROM places 
-        WHERE distance <= ${radius} ORDER BY distance ASC`,
-    )
+      `SELECT id, name, address, ST_X(location) as longitude, ST_Y(location) as latitude, ST_DistanceSphere(location, ST_GeomFromText('POINT(${longitude} ${latitude})', 4326)) as distance FROM places WHERE ST_DistanceSphere(location, ST_GeomFromText('POINT(${longitude} ${latitude})', 4326)) <= ${radius} ORDER BY distance ASC`,
+    );
   }
 
   update(id: number, updatePlaceDto: UpdatePlaceDto) {
     return this.placeRepository.query(
-      `UPDATE places SET 
-        name = '${updatePlaceDto.name}', 
-        address = '${updatePlaceDto.address}', 
-        location = ST_GeomFromText('POINT(${updatePlaceDto.longitude} ${updatePlaceDto.latitude})', 4326) 
-        WHERE id = ${id}`,
-    )
+      `UPDATE places SET name = '${updatePlaceDto.name}', address = '${updatePlaceDto.address}', location = ST_GeomFromText('POINT(${updatePlaceDto.longitude} ${updatePlaceDto.latitude})', 4326) WHERE id = ${id}`,
+    );
   }
 }
