@@ -24,7 +24,13 @@ export default function PlaceSearch({ handlePlaceSearch }) {
       <input name="lat" placeholder="Latitude" ref={latRef} />
       <input name="lng" placeholder="Longitude" ref={lngRef} />
 
-      <input type="number" placeholder="Radius" name="radius" ref={radiusRef} />
+      <input
+        type="number"
+        placeholder="Radius"
+        name="radius"
+        ref={radiusRef}
+        value="100"
+      />
 
       <button
         onClick={() =>
