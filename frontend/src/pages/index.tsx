@@ -71,6 +71,16 @@ export default function Home() {
       <Layout>
         <PlaceForm handlePlaceAdd={handlePlaceAdd} />
         <PlaceSearch handlePlaceSearch={handlePlaceSearch} />
+        {places.length > 0 && (
+          <>
+            <div>Results</div>
+            <ul>
+            {places.map((place: any) => (
+              <li key={place.id}>{place.name} - {place.address} - Lat: {place.lat} - Lng: {place.lng} - Distance: {place.distance}</li>
+            ))}
+            </ul>
+          </>
+        )}
       </Layout>
     </div>
   )
